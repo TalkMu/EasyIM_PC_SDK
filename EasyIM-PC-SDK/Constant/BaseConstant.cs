@@ -22,6 +22,6 @@ namespace EasyIM_PC_SDK.Constant
 	*/
     public class BaseConstant
     {
-        public static string IM_SERVICE_HOST = "http://127.0.0.1";
+        public static string IM_SERVICE_HOST = "http://192.168.101.84:8083";
     }
 }

@@ -33,7 +33,8 @@ namespace EasyIM_PC_SDK.Helper
         static LogHelper()
         {
             LoggerRepository = LogManager.CreateRepository("Log4netConsolePractice");
-            XmlConfigurator.ConfigureAndWatch(LoggerRepository, new FileInfo("log4net.config"));
+            var file = new FileInfo("log4net.config");
+            XmlConfigurator.ConfigureAndWatch(LoggerRepository, file);
             //logger = LogManager.GetLogger(LoggerRepository.Name, GetCallerType(2));
         }
 

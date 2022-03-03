@@ -1,5 +1,9 @@
-﻿using System;
+﻿using EasyIM_PC_SDK.Constant;
+using EasyIM_PC_SDK.Helper;
+using EasyIM_PC_SDK.Result;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 
 namespace EasyIM_PC_SDK.Api
@@ -22,5 +26,53 @@ namespace EasyIM_PC_SDK.Api
 	*/
     public class UserApi
     {
+        private ApiClient apiClient { get; set; }
+
+        public UserApi():this(IMConfiguration.GetDefaultApiClient())
+        {
+            
+        }
+        public UserApi(ApiClient apiClient)
+        {
+            this.apiClient = apiClient;
+        }
+
+        /// <summary>
+        /// 注册用户
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <param name="password">密码</param>
+        /// <returns></returns>
+        public ApiResult<string> Register(string userName,string password) 
+        {
+            string url = BaseConstant.IM_SERVICE_HOST + "/register";
+            Dictionary<string, object> keyValues = new Dictionary<string, object>();
+            keyValues.Add("userName", userName);
+            keyValues.Add("pwd", password);
+            string result = apiClient.Execute(url, JsonHelper.ToJsonStr(keyValues));
+            var apiResult = JsonHelper.ToBean<ApiResult<string>>(result);
+            return apiResult;
+        }
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <param name="password">密码</param>
+        /// <param name="isForcedLanding">是否强制登录 默认值：false</param>
+        /// <param name="deviceType">客户端类型 默认值：PC</param>
+        /// <returns></returns>
+        public ApiResult<LoginResult> Login(string userName, string password,bool isForcedLanding = false,string deviceType = "PC") 
+        {
+            string url = BaseConstant.IM_SERVICE_HOST + "/login";
+            Dictionary<string, object> keyValues = new Dictionary<string, object>();
+            keyValues.Add("userName", userName);
+            keyValues.Add("pwd", password);
+            keyValues.Add("isForcedLanding", isForcedLanding);
+            keyValues.Add("deviceType", deviceType);
+            string result = apiClient.Execute(url, JsonHelper.ToJsonStr(keyValues));
+            var apiResult = JsonHelper.ToBean<ApiResult<LoginResult>>(result);
+            return apiResult;
+        }
     }
 }
