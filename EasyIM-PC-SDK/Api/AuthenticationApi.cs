@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EasyIM_PC_SDK.Constant;
+using EasyIM_PC_SDK.Helper;
+using EasyIM_PC_SDK.Response;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,9 +25,19 @@ namespace EasyIM_PC_SDK.Api
 	*/
     public class AuthenticationApi
     {
-        public string GetToken() 
+        /// <summary>
+        /// 获取Token
+        /// </summary>
+        /// <param name="AccessKeyId">应用Key</param>
+        /// <returns></returns>
+        public string GetToken(string AccessKeyId) 
         {
-            return null;
+            string url = BaseConstant.IM_SERVICE_HOST + "/platform/mobilAuth";
+            List<KeyValuePair<string, string>> paramList = new List<KeyValuePair<string, string>>();
+            paramList.Add(new KeyValuePair<string, string>("accessKeyId", AccessKeyId));
+            string result = HttpHelper.PostForm(url, paramList);
+            var apiResult = JsonHelper.ToBean<ApiResult<string>>(result);
+            return apiResult.Data;
         }
     }
 }

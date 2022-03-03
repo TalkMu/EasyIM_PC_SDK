@@ -85,7 +85,7 @@ namespace EasyIM_PC_SDK.Helper
         /// <param name="url">请求地址</param>
         /// <param name="paramList">请求参数-键值对</param>
         /// <returns>响应结果</returns>
-        public static string Post(string url, List<KeyValuePair<string, string>> paramList)
+        public static string PostForm(string url, List<KeyValuePair<string, string>> paramList)
         {
             HttpClient httpClient = new HttpClient();
             httpClient.MaxResponseContentBufferSize = 256000;
@@ -125,9 +125,9 @@ namespace EasyIM_PC_SDK.Helper
         /// 发起Post请求-同步
         /// </summary>
         /// <param name="posturl">请求地址</param>
-        /// <param name="postData">请求参数-字符串</param>
+        /// <param name="jsonParams">请求参数-字符串</param>
         /// <returns>响应结果</returns>
-        public static string Post(string url, string postData)
+        public static string PostJson(string posturl, string jsonParams)
         {
             Stream outstream = null;
             Stream instream = null;
@@ -135,18 +135,19 @@ namespace EasyIM_PC_SDK.Helper
             HttpWebResponse response = null;
             HttpWebRequest request = null;
             Encoding encoding = System.Text.Encoding.GetEncoding("utf-8");
-            byte[] data = encoding.GetBytes(postData);
+            byte[] data = encoding.GetBytes(jsonParams);
             // 准备请求...
             try
             {
                 // 设置参数
-                request = WebRequest.Create(url) as HttpWebRequest;
+                request = WebRequest.Create(posturl) as HttpWebRequest;
                 CookieContainer cookieContainer = new CookieContainer();
                 request.CookieContainer = cookieContainer;
                 request.AllowAutoRedirect = true;
                 request.Method = "POST";
-                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentType = "application/json;charset=utf-8";
                 request.ContentLength = data.Length;
+                request.Timeout = 1000 * 200;
                 outstream = request.GetRequestStream();
                 outstream.Write(data, 0, data.Length);
                 outstream.Close();
@@ -162,7 +163,56 @@ namespace EasyIM_PC_SDK.Helper
             }
             catch (Exception ex)
             {
-                string err = ex.Message;
+                LogHelper.ErrorFormat("Http-Post 异常:{0}", ex.Message);
+                return string.Empty;
+            }
+        }
+        #endregion
+
+        #region 发起Post请求-同步
+        /// <summary>
+        /// 发起Post请求-同步
+        /// </summary>
+        /// <param name="posturl">请求地址</param>
+        /// <param name="postData">请求参数-字符串</param>
+        /// <returns>响应结果</returns>
+        public static string PostForm(string posturl, string postData)
+        {
+            Stream outstream = null;
+            Stream instream = null;
+            StreamReader sr = null;
+            HttpWebResponse response = null;
+            HttpWebRequest request = null;
+            Encoding encoding = System.Text.Encoding.GetEncoding("utf-8");
+            byte[] data = encoding.GetBytes(postData);
+            // 准备请求...
+            try
+            {
+                // 设置参数
+                request = WebRequest.Create(posturl) as HttpWebRequest;
+                CookieContainer cookieContainer = new CookieContainer();
+                request.CookieContainer = cookieContainer;
+                request.AllowAutoRedirect = true;
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+                request.Timeout = 1000 * 200;
+                outstream = request.GetRequestStream();
+                outstream.Write(data, 0, data.Length);
+                outstream.Close();
+                //发送请求并获取相应回应数据
+                response = request.GetResponse() as HttpWebResponse;
+                //直到request.GetResponse()程序才开始向目标网页发送Post请求
+                instream = response.GetResponseStream();
+                sr = new StreamReader(instream, encoding);
+                //返回结果网页（html）代码
+                string content = sr.ReadToEnd();
+                string err = string.Empty;
+                return content;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.ErrorFormat("Http-Post 异常:{0}", ex.Message);
                 return string.Empty;
             }
         }
