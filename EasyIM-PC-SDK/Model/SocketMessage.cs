@@ -24,8 +24,21 @@ namespace EasyIM_PC_SDK.Model
 	*/
     public class SocketMessage
     {
-        public IChannel channel { get; set; }
-
+        /// <summary>
+        /// 用户唯一标识
+        /// </summary>
+        public string UserId { get; set; }
+        /// <summary>
+        /// 通道
+        /// </summary>
+        public IChannel Channel { get; set; }
+        /// <summary>
+        /// Token
+        /// </summary>
         public string Token { get; set; }
+        /// <summary>
+        /// 业务URL
+        /// </summary>
+        public string UrlMapping { get; set; }
     }
 }

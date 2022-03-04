@@ -64,7 +64,9 @@ namespace EasyIM_PC_SDK
 
         public void SendMsg(string msg)
         {
-            channel.WriteAndFlushAsync(msg);
+            IMMessage message = new IMMessage();
+            message.Message = msg;
+            channel.WriteAndFlushAsync(message);
         }
     }
 }
