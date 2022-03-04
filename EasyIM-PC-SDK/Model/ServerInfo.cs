@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace EasyIM_PC_SDK.Result
+namespace EasyIM_PC_SDK.Model
 {
     /*
      * ========================================================================
      * Copyright Notice  2010-2022 sdfykjyxgs.cn All rights reserved .
      * ========================================================================
      * 机器名称：DESKTOP-GNAF83O 
-     * 文件名：  LoginResult 
+     * 文件名：  ServerInfo 
      * 版本号：  V1.0.0.0 
      * 创建人：  admin 
      * 创建时间：2022/3/3 16:56:00 
@@ -21,7 +21,7 @@ namespace EasyIM_PC_SDK.Result
      * 版本号  ：V1.0.0.0 
      * 描述    ：
 	*/
-    public class LoginResult
+    public class ServerInfo
     {
         /// <summary>
         /// 用户名

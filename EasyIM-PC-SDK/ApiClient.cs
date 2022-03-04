@@ -1,9 +1,17 @@
-﻿using EasyIM_PC_SDK.Api;
+﻿using DotNetty.Transport.Bootstrapping;
+using DotNetty.Transport.Channels;
+using DotNetty.Transport.Channels.Sockets;
+using EasyIM_PC_SDK.Api;
+using EasyIM_PC_SDK.Handler;
+using EasyIM_PC_SDK.Helper;
+using EasyIM_PC_SDK.Model;
 using EasyIM_PC_SDK.Result;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyIM_PC_SDK
 {
@@ -25,22 +33,10 @@ namespace EasyIM_PC_SDK
 	*/
     public class ApiClient
     {
-        public string Token { get; set; }
-        public string AccessKeyId { get; set; }
-
-        public ApiClient(string accessKeyId) 
-        {
-            AccessKeyId = accessKeyId;
-        }
-
         public string Execute(string url, string jsonStr) 
         {
-            if (Token == null)
-            {
-                Token=new AuthenticationApi().GetToken(AccessKeyId);
-            }
             HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("token", Token);
+            httpClient.DefaultRequestHeaders.Add("token", IMConfiguration.GetToken());
             HttpContent httpContent = new StringContent(jsonStr);
             httpContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
@@ -48,5 +44,6 @@ namespace EasyIM_PC_SDK
             var result = response.Content.ReadAsStringAsync().Result;
             return result;
         }
+
     }
 }

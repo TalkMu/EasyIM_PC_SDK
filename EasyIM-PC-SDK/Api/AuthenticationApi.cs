@@ -1,6 +1,6 @@
 ﻿using EasyIM_PC_SDK.Constant;
 using EasyIM_PC_SDK.Helper;
-using EasyIM_PC_SDK.Response;
+using EasyIM_PC_SDK.Result;
 using System;
 using System.Collections.Generic;
 using System.Text;

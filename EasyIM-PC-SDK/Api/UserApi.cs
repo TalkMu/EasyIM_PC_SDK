@@ -1,5 +1,6 @@
 ﻿using EasyIM_PC_SDK.Constant;
 using EasyIM_PC_SDK.Helper;
+using EasyIM_PC_SDK.Model;
 using EasyIM_PC_SDK.Result;
 using System;
 using System.Collections.Generic;
@@ -55,14 +56,14 @@ namespace EasyIM_PC_SDK.Api
         }
 
         /// <summary>
-        /// 登录
+        /// 获取TCP服务器信息
         /// </summary>
         /// <param name="userName">用户名</param>
         /// <param name="password">密码</param>
         /// <param name="isForcedLanding">是否强制登录 默认值：false</param>
         /// <param name="deviceType">客户端类型 默认值：PC</param>
         /// <returns></returns>
-        public ApiResult<LoginResult> Login(string userName, string password,bool isForcedLanding = false,string deviceType = "PC") 
+        public ApiResult<ServerInfo> GetServerInfo(string userName, string password,bool isForcedLanding = false,string deviceType = "PC") 
         {
             string url = BaseConstant.IM_SERVICE_HOST + "/login";
             Dictionary<string, object> keyValues = new Dictionary<string, object>();
@@ -71,7 +72,7 @@ namespace EasyIM_PC_SDK.Api
             keyValues.Add("isForcedLanding", isForcedLanding);
             keyValues.Add("deviceType", deviceType);
             string result = apiClient.Execute(url, JsonHelper.ToJsonStr(keyValues));
-            var apiResult = JsonHelper.ToBean<ApiResult<LoginResult>>(result);
+            var apiResult = JsonHelper.ToBean<ApiResult<ServerInfo>>(result);
             return apiResult;
         }
     }
