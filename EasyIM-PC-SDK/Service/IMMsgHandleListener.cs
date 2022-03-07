@@ -8,7 +8,7 @@ using System.Text;
  * Copyright Notice  2010-2022 sdfykjyxgs.cn All rights reserved .
  * ========================================================================
  * 机器名称：DESKTOP-GNAF83O 
- * 文件名：  CustomMsgHandleListener 
+ * 文件名：  IMMsgHandleListener 
  * 版本号：  V1.0.0.0 
  * 创建人：  admin 
  * 创建时间：2022/3/4 11:10:14 
@@ -22,7 +22,7 @@ using System.Text;
 namespace EasyIM_PC_SDK.Service
 {
 
-    public interface CustomMsgHandleListener
+    public interface IMMsgHandleListener
     {
         /// <summary>
         /// 消息回调处理

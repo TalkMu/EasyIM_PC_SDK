@@ -16,7 +16,7 @@ namespace EasyIM_PC_SDK_Demo
         {
             Console.WriteLine("Hello World!");
             IMConfiguration.InitAccessKeyId("51599b3420acb5f2e7d7c2ce9b2b8e90");
-            IMConfiguration.SetMsgHandleListener(new MsgCallBackListener());
+            IMConfiguration.SetMsgHandleListener(new MessageCallBackListener());
             var client = IMConfiguration.InitIMAccount("zhangsan", "zhangsan");
             client.Run().Wait();
             while (true)

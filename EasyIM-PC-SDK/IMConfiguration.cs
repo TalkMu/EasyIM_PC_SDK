@@ -41,7 +41,7 @@ namespace EasyIM_PC_SDK
         /// <summary>
         /// 消息回调监听器
         /// </summary>
-        private static CustomMsgHandleListener msgHandleListener;
+        private static IMMsgHandleListener msgHandleListener;
 
         public static void InitAccessKeyId(string accessKeyId) 
         {
@@ -66,7 +66,7 @@ namespace EasyIM_PC_SDK
         public static void ReConnectIMClient() 
         {
             defaultEasyIMClient = new EasyIMClient(serverInfo);
-            defaultEasyIMClient.Run();
+            defaultEasyIMClient.Run().Wait();
         }
 
         public static EasyIMClient GetEasyIMClient() 
@@ -87,12 +87,12 @@ namespace EasyIM_PC_SDK
             return Token;
         }
 
-        public static void SetMsgHandleListener(CustomMsgHandleListener listener) 
+        public static void SetMsgHandleListener(IMMsgHandleListener listener) 
         {
             msgHandleListener = listener;
         }
 
-        public static CustomMsgHandleListener GetMsgHandleListener() 
+        public static IMMsgHandleListener GetMsgHandleListener() 
         {
             return msgHandleListener;
         }
