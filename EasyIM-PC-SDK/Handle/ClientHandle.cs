@@ -25,7 +25,7 @@ namespace EasyIM_PC_SDK.Handler
      * 版本号  ：V1.0.0.0 
      * 描述    ：
 	*/
-    public class ClientHandle : SimpleChannelInboundHandler<string>
+    public class ClientHandle : SimpleChannelInboundHandler<IMMessage>
     {
         public override void ChannelActive(IChannelHandlerContext context)
         {
@@ -47,22 +47,22 @@ namespace EasyIM_PC_SDK.Handler
             IMConfiguration.ReConnectIMClient();
         }
 
-        protected override void ChannelRead0(IChannelHandlerContext ctx, string msg)
+        protected override void ChannelRead0(IChannelHandlerContext ctx, IMMessage msg)
         {
-            LogHelper.DebugFormat("ChannelRead0-读取来自服务器的消息：{0}", msg);
-            //if (msg.MessageType == MessageType.PONG)
-            //{
-            //    LogHelper.DebugFormat("ChannelRead0-掉线，正在重新连接。。。。");
-            //    // 掉线
-            //    IMConfiguration.ReConnectIMClient();
-            //}
-            //else if (msg.MessageType == MessageType.PING)
-            //{
-            //    LogHelper.DebugFormat("心跳包");
-            //    // 心跳
-            //}
+            //LogHelper.DebugFormat("ChannelRead0-读取来自服务器的消息：{0}", msg);
+            if (msg.MessageType == MessageType.PONG)
+            {
+                LogHelper.DebugFormat("ChannelRead0-掉线，正在重新连接。。。。");
+                // 掉线
+                IMConfiguration.ReConnectIMClient();
+            }
+            else if (msg.MessageType == MessageType.PING)
+            {
+                LogHelper.DebugFormat("心跳包");
+                // 心跳
+            }
             //回调消息
-            //CallBackMsg(msg);
+            CallBackMsg(msg);
             //ctx.WriteAndFlushAsync(Unpooled.CopiedBuffer(msg));
         }
 

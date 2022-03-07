@@ -31,8 +31,18 @@ namespace EasyIM_PC_SDK.Codec
         protected override void Encode(IChannelHandlerContext context, IMMessage message, IByteBuffer output)
         {
             byte[] messageBytes = Encoding.UTF8.GetBytes(JsonHelper.ToJsonStr(message));
-            IByteBuffer initialMessage = Unpooled.Buffer(messageBytes.Length);
-            initialMessage.WriteBytes(messageBytes);
+
+            byte[] totalBytes = new byte[1 + 4 + messageBytes.Length];
+            // 标记
+            totalBytes[0] = 0x02;
+            // 长度
+            byte[] msgLengthByte = BitConverter.GetBytes(messageBytes.Length);
+            Array.Copy(msgLengthByte, 0, totalBytes, 1, msgLengthByte.Length);
+            // 消息内容
+            Array.Copy(messageBytes, 0, totalBytes, 5, messageBytes.Length);
+            //var totalMsg = Encoding.UTF8.GetString(totalBytes);
+            IByteBuffer initialMessage = Unpooled.Buffer(totalBytes.Length);
+            initialMessage.WriteBytes(totalBytes);
             output.WriteBytes(initialMessage);
         }
     }

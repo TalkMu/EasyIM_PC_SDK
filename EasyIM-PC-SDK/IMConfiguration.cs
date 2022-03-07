@@ -56,7 +56,7 @@ namespace EasyIM_PC_SDK
             var result = new UserApi().GetServerInfo(userName, password);
             
             serverInfo = new ServerInfo();
-            serverInfo.ServerIp = "192.168.101.59";
+            serverInfo.ServerIp = "192.168.101.84";
             serverInfo.ServerTcpPort = 11211;
 
             defaultEasyIMClient = new EasyIMClient(serverInfo);

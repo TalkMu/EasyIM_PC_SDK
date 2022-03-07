@@ -26,24 +26,53 @@ namespace EasyIM_PC_SDK.Codec
      * 版本号  ：V1.0.0.0 
      * 描述    ：
 	*/
-    public class ModelDecoder : ByteToMessageDecoder
+    public class ModelDecoder : LengthFieldBasedFrameDecoder
     {
-        protected override void Decode(IChannelHandlerContext context, IByteBuffer input, List<object> output)
+        /// <summary>
+        /// 数据包基本长度（1字节（标记）+4字节（数据长度））
+        /// </summary>
+        private static int BASE_SIZE = 5;
+
+        public ModelDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip, bool failFast) : base(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, failFast)
         {
-            byte[] array = new byte[input.ReadableBytes];
-            input.GetBytes(input.ReaderIndex, array, 0, input.ReadableBytes);
-            input.Clear();
-            var content = Encoding.UTF8.GetString(array);
+
+        }
+
+        protected override object Decode(IChannelHandlerContext context, IByteBuffer input)
+        {
+            // 可读区域长度
+            var length = input.ReadableBytes;
+            if (length < BASE_SIZE)
+            {
+                return null;
+            }
+            input.MarkReaderIndex();
+            var mark = input.ReadByte();
             try
             {
-                var imMessage = JsonHelper.ToBean<IMMessage>(content);
-                output.Add(imMessage);
+                if (mark == 0x02)
+                {
+                    byte[] msgLengthByte = new byte[4];
+                    // 获取长度
+                    input.ReadBytes(msgLengthByte);
+                    var msgLength = System.BitConverter.ToInt32(msgLengthByte, 0);
+                    if (msgLength > length)
+                    {
+                        input.ResetReaderIndex();
+                        return null;
+                    }
+                    var msgContentBuf = input.ReadBytes(msgLength);
+                    input.Clear();
+                    var msgContent = msgContentBuf.GetString(0, msgLength, Encoding.UTF8);
+                    IMMessage imMessage = JsonHelper.ToBean<IMMessage>(msgContent);
+                    return imMessage;
+                }
             }
             catch (Exception e)
             {
                 LogHelper.ErrorFormat("解码失败:{0}", e.Message);
             }
-            
+            return null;
         }
     }
 }

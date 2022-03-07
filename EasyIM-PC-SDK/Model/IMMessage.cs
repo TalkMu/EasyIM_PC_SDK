@@ -55,5 +55,13 @@ namespace EasyIM_PC_SDK.Model
         /// 消息类型
         /// </summary>
         public MessageType MessageType { get; set; }
+        /// <summary>
+        /// 消息时间
+        /// </summary>
+        public long MessageTime { get; set; }
+        /// <summary>
+        /// 消息ID
+        /// </summary>
+        public string MessageId { get; set; }
     }
 }

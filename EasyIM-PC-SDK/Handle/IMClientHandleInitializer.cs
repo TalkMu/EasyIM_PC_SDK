@@ -33,7 +33,7 @@ namespace EasyIM_PC_SDK.Handler
                 //  9 秒没发送消息 将IdleStateHandler 添加到 ChannelPipeline 中
                 .AddLast(new IdleStateHandler(16, 9, 0))
                 .AddLast(new ModelEncoder())
-                .AddLast(new ModelDecoder())
+                .AddLast(new ModelDecoder(int.MaxValue,0,4,0,0,true))
                 .AddLast(clientHandle);
         }
     }
