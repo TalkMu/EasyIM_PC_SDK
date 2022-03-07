@@ -7,3 +7,4 @@
 /.vs/EasyIM-PC-SDK
 /EasyIM-PC-SDK/bin/Debug/netcoreapp3.1
 /EasyIM-PC-SDK-Demo/bin/Debug/netcoreapp3.1
+/.idea
