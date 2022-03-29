@@ -28,11 +28,13 @@ namespace EasyIMApp
 
         private void LoginBtn_Click(object sender, EventArgs e)
         {
-
+            LoginBtn.Text = "登录中...";
+            LoginBtn.Enabled = false;
             LoginVO loginVO = new LoginVO();
             loginVO.UserName = UserName.Text;
             loginVO.Password = Password.Text;
             var client = IMConfiguration.InitClient(loginVO.UserName, loginVO.Password);
+            
             while (!client.InitSuccess)
             {
                 Thread.Sleep(2000);

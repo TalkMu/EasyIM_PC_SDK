@@ -47,6 +47,7 @@
             // 
             this.Password.Location = new System.Drawing.Point(150, 186);
             this.Password.Name = "Password";
+            this.Password.PasswordChar = '*';
             this.Password.Size = new System.Drawing.Size(200, 29);
             this.Password.TabIndex = 1;
             this.Password.Text = "zhangsan";
