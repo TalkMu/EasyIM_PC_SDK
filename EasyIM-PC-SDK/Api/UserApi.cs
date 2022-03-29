@@ -75,5 +75,20 @@ namespace EasyIM_PC_SDK.Api
             var apiResult = JsonHelper.ToBean<ApiResult<ServerInfo>>(result);
             return apiResult;
         }
+
+        /// <summary>
+        /// 获取已经登录的TCP服务信息
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public ApiResult<ServerInfo> GetServerInfo(string userName) 
+        {
+            string url = BaseConstant.IM_SERVICE_HOST + "/queryUsers";
+            List<KeyValuePair<string, string>> paramList = new List<KeyValuePair<string, string>>();
+            paramList.Add(new KeyValuePair<string, string>("userName", userName));
+            string result = apiClient.ExecuteForm(url, paramList);
+            var apiResult = JsonHelper.ToBean<ApiResult<ServerInfo>>(result);
+            return apiResult;
+        }
     }
 }

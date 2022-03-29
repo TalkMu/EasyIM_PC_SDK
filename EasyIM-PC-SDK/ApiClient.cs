@@ -45,5 +45,15 @@ namespace EasyIM_PC_SDK
             return result;
         }
 
+        public string ExecuteForm(string url, List<KeyValuePair<string, string>> paramList)
+        {
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("token", IMConfiguration.GetToken());
+            HttpContent httpContent = new FormUrlEncodedContent(paramList);
+            HttpResponseMessage response = httpClient.PostAsync(new Uri(url), httpContent).Result;
+            var result = response.Content.ReadAsStringAsync().Result;
+            return result;
+        }
+
     }
 }

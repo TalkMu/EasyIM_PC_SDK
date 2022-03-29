@@ -2,9 +2,13 @@
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
+using EasyIM_PC_SDK.Api;
+using EasyIM_PC_SDK.Constant;
 using EasyIM_PC_SDK.Handler;
 using EasyIM_PC_SDK.Helper;
 using EasyIM_PC_SDK.Model;
+using EasyIM_PC_SDK.Service;
+using EasyIM_PC_SDK.Service.Impl;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -29,18 +33,48 @@ namespace EasyIM_PC_SDK
      * 版本号  ：V1.0.0.0 
      * 描述    ：
 	*/
+    /// <summary>
+    /// 登录监听
+    /// </summary>
     public class EasyIMClient
     {
+        public Action<IMMessage> CallBack;
+
         private static IChannel channel;
         private static MultithreadEventLoopGroup eventLoopGroup = new MultithreadEventLoopGroup();
         private ServerInfo serverInfo;
+        /// <summary>
+        /// 是否初始化成功
+        /// </summary>
+        public bool InitSuccess { get; set; }
 
-        public EasyIMClient(ServerInfo serverInfo)
-        {
+        public IMMsgHandleListener msgHandleListener { get; set; }
+
+
+        /// <summary>
+        /// 退出登录监听
+        /// </summary>
+        public Action<IMMessage> OnOutLogin { get; set; }
+        
+
+        public EasyIMClient(ServerInfo serverInfo){
             this.serverInfo = serverInfo;
         }
 
-        public async Task Run()
+        public IChannel Login(string userName)
+        {
+            IMMessage message = new IMMessage();
+            message.Message = "login";
+            message.DeviceType = "PC";
+            message.Sender = userName;
+            message.UrlMapping = SocketUrlConstant.LOGIN;
+            message.MessageType = MessageType.USERMESSAGE;
+            message.Token = IMConfiguration.GetToken();
+            channel.WriteAndFlushAsync(message);
+            return channel;
+        }
+
+        public async Task RunClientAsync()
         {
             try
             {
@@ -51,6 +85,10 @@ namespace EasyIM_PC_SDK
                 channel = await bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse(serverInfo.ServerIp), serverInfo.ServerTcpPort));
                 //await clientChannel.CloseAsync();
                 //channel.WriteAndFlushAsync("hahaha");
+                if (channel != null)
+                {
+                    InitSuccess = true;
+                }
             }
             catch (Exception ex)
             {

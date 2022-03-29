@@ -73,6 +73,12 @@ namespace EasyIM_PC_SDK.Handler
             {
                 msgHandleListener.Handle(msg);
             }
+
+            var imClient = IMConfiguration.GetEasyIMClient();
+            if (imClient != null) 
+            {
+
+            }
         }
 
 

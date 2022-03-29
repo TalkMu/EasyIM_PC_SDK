@@ -5,6 +5,8 @@
 /EasyIM-PC-SDK-Demo/obj
 /EasyIM-PC-SDK/obj
 /.vs/EasyIM-PC-SDK
-/EasyIM-PC-SDK/bin/Debug/netcoreapp3.1
-/EasyIM-PC-SDK-Demo/bin/Debug/netcoreapp3.1
+/EasyIM-PC-SDK/bin
+/EasyIM-PC-SDK-Demo/bin
 /.idea
+/EasyIMApp/bin
+/EasyIMApp/obj

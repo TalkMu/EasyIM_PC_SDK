@@ -5,7 +5,7 @@ using EasyIM_PC_SDK.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Threading.Tasks;
 
 namespace EasyIM_PC_SDK
 {
@@ -35,8 +35,6 @@ namespace EasyIM_PC_SDK
 
         private static string AccessKeyId;
         private static string Token;
-        private static string UserName;
-        private static string Password;
 
         /// <summary>
         /// 消息回调监听器
@@ -49,24 +47,31 @@ namespace EasyIM_PC_SDK
             
         }
 
-        public static EasyIMClient InitIMAccount(string userName, string password) 
+        public static EasyIMClient InitClient(string userName, string password) 
         {
-            UserName = userName;
-            Password = password;
-            var result = new UserApi().GetServerInfo(userName, password);
-            
-            serverInfo = new ServerInfo();
-            serverInfo.ServerIp = "192.168.101.84";
-            serverInfo.ServerTcpPort = 11211;
+            var userApi = new UserApi();
+            var result = userApi.GetServerInfo(userName, password);
+            if (result!= null && result.Message != null && result.Message.Equals("该用户已经登陆"))
+            {
+                result = userApi.GetServerInfo(userName);
+            }
+            serverInfo = result.Data;
+            //serverInfo = new ServerInfo();
+            //serverInfo.ServerIp = "192.168.101.84";
+            //serverInfo.ServerTcpPort = 11211;
 
-            defaultEasyIMClient = new EasyIMClient(serverInfo);
+            defaultEasyIMClient = new EasyIMClient(result.Data);
+            Task.Run(() =>
+            {
+                defaultEasyIMClient.RunClientAsync().Wait();
+            });
             return defaultEasyIMClient;
         }
 
         public static void ReConnectIMClient() 
         {
             defaultEasyIMClient = new EasyIMClient(serverInfo);
-            defaultEasyIMClient.Run().Wait();
+            defaultEasyIMClient.RunClientAsync().Wait();
         }
 
         public static EasyIMClient GetEasyIMClient() 
