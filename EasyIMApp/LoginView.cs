@@ -43,18 +43,15 @@ namespace EasyIMApp
             
             // 自动登录
             client.Login(loginVO.UserName);
-            this.Hide();
-            MainView mainView = new MainView();
-            mainView.Show();
-
-
-            //client.CallBack = msg =>
-            //{
-            //    if (msg != null)
-            //    {
-                    
-            //    }
-            //};
+            client.CallBack = msg =>
+            {
+                if (msg != null)
+                {
+                    this.Hide();
+                    MainView mainView = new MainView();
+                    mainView.Show();
+                }
+            };
 
 
             //Task.Run(() => 
@@ -64,6 +61,14 @@ namespace EasyIMApp
             //    // 登录
             //    easyIMClient.Login(loginVO.UserName);
             //});
+        }
+
+        private void LoginSuccessAfter() 
+        {
+            this.Hide();
+            MainView mainView = new MainView();
+            mainView.Show();
+
         }
     }
 }
