@@ -21,7 +21,7 @@ namespace EasyIMApp
             ApplicationConfiguration.Initialize();
             IMConfiguration.InitAccessKeyId("51599b3420acb5f2e7d7c2ce9b2b8e90");
             IMConfiguration.SetMsgHandleListener(new MessageCallBackListener());
-            Application.Run(new LoginView());
+            Application.Run(new MainView());
         }
     }
 }

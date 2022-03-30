@@ -23,35 +23,35 @@ namespace EasyIMApp
         public LoginView()
         {
             InitializeComponent();
-            
         }
 
         private void LoginBtn_Click(object sender, EventArgs e)
         {
             LoginBtn.Text = "登录中...";
-            LoginBtn.Enabled = false;
+            
             LoginVO loginVO = new LoginVO();
             loginVO.UserName = UserName.Text;
             loginVO.Password = Password.Text;
             var client = IMConfiguration.InitClient(loginVO.UserName, loginVO.Password);
-            
+            LoginBtn.Text = "连接服务器成功...";
             while (!client.InitSuccess)
             {
                 Thread.Sleep(2000);
             }
             // 初始化成功
-            
+            var that = this;
             // 自动登录
             client.Login(loginVO.UserName);
-            client.CallBack = msg =>
+            LoginBtn.Text = "正在登录...";
+            while (!client.LoginSuccess)
             {
-                if (msg != null)
-                {
-                    this.Hide();
-                    MainView mainView = new MainView();
-                    mainView.Show();
-                }
-            };
+                Thread.Sleep(2000);
+            }
+            LoginBtn.Text = "登录成功...";
+
+            that.Hide();
+            MainView mainView = new MainView();
+            mainView.Show();
 
 
             //Task.Run(() => 
@@ -63,7 +63,7 @@ namespace EasyIMApp
             //});
         }
 
-        private void LoginSuccessAfter() 
+        public void LoginSuccessAfter() 
         {
             this.Hide();
             MainView mainView = new MainView();

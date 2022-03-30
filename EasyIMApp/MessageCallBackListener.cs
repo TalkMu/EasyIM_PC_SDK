@@ -14,21 +14,20 @@ namespace EasyIMApp
     {
         public void Handle(IMMessage msg)
         {
-            //if (msg.Message.Equals("登录成功"))
-            //{
-            //    try
-            //    {
-            //        MainView mainView = new MainView();
-
-            //        mainView.Show();
-            //    }
-            //    catch (Exception)
-            //    {
-
-            //        throw;
-            //    }
-            //}
             var client = IMConfiguration.GetEasyIMClient();
+            if (msg.Message.Equals("登录成功"))
+            {
+                try
+                {
+                    
+                    client.LoginSuccess = true;
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
             if (client != null && client.CallBack != null)
             {
                 client.CallBack(msg);

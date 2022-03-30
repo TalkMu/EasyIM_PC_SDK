@@ -47,6 +47,10 @@ namespace EasyIM_PC_SDK
         /// 是否初始化成功
         /// </summary>
         public bool InitSuccess { get; set; }
+        /// <summary>
+        /// 是否登录成功
+        /// </summary>
+        public bool LoginSuccess { get; set; }
 
         public IMMsgHandleListener msgHandleListener { get; set; }
 
